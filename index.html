@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>نظام تقارير العمليات</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Tahoma;
+}
+
+body{
+background:#0f172a;
+color:white;
+padding:25px;
+text-align:center;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+color:#facc15;
+margin-bottom:25px;
+}
+
+.section{
+background:#1e293b;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px;
+}
+
+.section h3{
+margin-bottom:10px;
+color:#facc15;
+}
+
+.row{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:6px;
+margin-bottom:6px;
+}
+
+.row span{
+min-width:90px;
+}
+
+input,select{
+padding:6px;
+border-radius:6px;
+border:none;
+background:#020617;
+color:white;
+text-align:center;
+}
+
+button{
+background:#facc15;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.remove{
+background:#ef4444;
+color:white;
+}
+
+#preview{
+background:#020617;
+padding:15px;
+border-radius:10px;
+margin-top:20px;
+white-space:pre-wrap;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>نظام تقارير العمليات</h1>
+
+<div class="section">
+نوع التقرير :
+<select id="reportType" onchange="switchReport()">
+<option value="island">جزيرة بوليتو</option>
+<option value="port">الميناء</option>
+</select>
+</div>
+
+<div class="section">
+وقت استلام العمليات : الساعة 6
+<select id="ampm" onchange="update()">
+<option>صباح</option>
+<option>مساء</option>
+</select>
+</div>
+
+<div class="section">
+<h3>العمليات</h3>
+<div class="row">
+<span>العمليات :</span>
+<select disabled>
+<option>R</option>
+</select>
+<input id="operationsInput" type="number" placeholder="000" oninput="update()">
+</div>
+</div>
+
+<div class="section">
+<h3>نائب العمليات</h3>
+<div class="row">
+<span>نائب العمليات :</span>
+<select disabled>
+<option>R</option>
+</select>
+<input id="deputyInput" type="number" placeholder="000" oninput="update()">
+</div>
+</div>
+
+<div class="section">
+<h3>قيادة حرس الحدود</h3>
+<div id="border"></div>
+<button onclick="addUnit('border','قيادة',true)">إضافة</button>
+</div>
+
+<div class="section">
+<h3>مجد 1</h3>
+<div id="majd1"></div>
+<button onclick="addUnit('majd1','مجد')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>ردع 1</h3>
+<div id="rada1"></div>
+<button onclick="addUnit('rada1','ردع')">إضافة</button>
+</div>
+
+<div id="islandSections">
+
+<div class="section">
+<h3>شهاب</h3>
+<div id="sh"></div>
+<button onclick="addNumberedUnit('sh','شهاب')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>سيف</h3>
+<div id="sf"></div>
+<button onclick="addNumberedUnit('sf','سيف')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>رمح</h3>
+<div id="romh"></div>
+<button onclick="addNumberedUnit('romh','رمح')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>حد</h3>
+<div id="had"></div>
+<button onclick="addNumberedUnit('had','حد')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>سلاح</h3>
+<div id="weapon"></div>
+<button onclick="addNumberedUnit('weapon','سلاح')">إضافة</button>
+</div>
+
+</div>
+
+<div id="portSections" style="display:none;">
+
+<div class="section">
+<h3>سيف</h3>
+<div id="sf_port"></div>
+<button onclick="addNumberedUnit('sf_port','سيف')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>رمح</h3>
+<div id="romh_port"></div>
+<button onclick="addNumberedUnit('romh_port','رمح')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>مشرف صد</h3>
+<div id="sad_super"></div>
+</div>
+
+<div class="section">
+<h3>صد</h3>
+<div id="sad"></div>
+</div>
+
+<div class="section">
+<h3>حرس</h3>
+<div id="guard"></div>
+<button onclick="addNumberedUnit('guard','حرس')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>تنظيم</h3>
+<div id="org"></div>
+<button onclick="addNumberedUnit('org','تنظيم')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>ساحل</h3>
+<div id="coast"></div>
+<button onclick="addNumberedUnit('coast','ساحل')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>سجن</h3>
+<div id="prison"></div>
+<button onclick="addNumberedUnit('prison','سجن')">إضافة</button>
+</div>
+
+</div>
+
+<div class="section">
+<h3>شرطة عسكرية</h3>
+<div id="mp"></div>
+<button onclick="addUnit('mp','شرطة')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>ضابط خفر</h3>
+<div id="duty"></div>
+<button onclick="addUnit('duty','خفر')">إضافة</button>
+</div>
+
+<div class="section">
+<h3>شاهين</h3>
+<div id="shaheen"></div>
+<button onclick="addUnit('shaheen','شاهين')">إضافة</button>
+</div>
+
+<div style="margin-top:10px;">
+<button onclick="update()">تحديث التقرير</button>
+<button onclick="copyReport()">نسخ التقرير</button>
+</div>
+
+<pre id="preview"></pre>
+
+</div>
+
+<script>
+function switchReport(){
+const type=document.getElementById("reportType").value
+document.getElementById("islandSections").style.display = type==="island" ? "block" : "none"
+document.getElementById("portSections").style.display = type==="port" ? "block" : "none"
+update()
+}
+
+function createRow(title,fixedPrefix=false){
+const row=document.createElement("div")
+row.className="row"
+
+const label=document.createElement("span")
+label.textContent=title+" :"
+
+const prefix=document.createElement("select")
+;["R","G","F","H","A","M"].forEach(p=>{
+const op=document.createElement("option")
+op.value=p
+op.textContent=p
+prefix.appendChild(op)
+})
+
+if(fixedPrefix){
+prefix.value="R"
+prefix.disabled=true
+}
+
+prefix.onchange=update
+
+const input=document.createElement("input")
+input.placeholder="000"
+input.type="number"
+input.oninput=update
+
+const remove=document.createElement("button")
+remove.textContent="×"
+remove.className="remove"
+remove.onclick=()=>{
+row.remove()
+renumberArea(row.parentElement.id)
+update()
+}
+
+row.append(label,prefix,input,remove)
+return row
+}
+
+function addUnit(area,label,fixed=false){
+const parent=document.getElementById(area)
+const row=createRow(label,fixed)
+parent.appendChild(row)
+update()
+}
+
+function addNumberedUnit(area,label){
+const parent=document.getElementById(area)
+const number=parent.children.length+1
+const row=createRow(label+" "+number)
+parent.appendChild(row)
+update()
+}
+
+function renumberArea(area){
+const map={
+sh:"شهاب",
+sf:"سيف",
+romh:"رمح",
+had:"حد",
+weapon:"سلاح",
+sf_port:"سيف",
+romh_port:"رمح",
+sad_super:"مشرف صد",
+sad:"صد",
+guard:"حرس",
+org:"تنظيم",
+coast:"ساحل",
+prison:"سجن"
+}
+
+if(!map[area]) return
+
+const rows=document.querySelectorAll("#"+area+" .row")
+rows.forEach((row,index)=>{
+const span=row.querySelector("span")
+span.textContent=map[area]+" "+(index+1)+" :"
+})
+}
+
+function isAlwaysMentionArea(area,type){
+if(type==="island"){
+return area==="majd1" || area==="rada1" || area==="sh" || area==="sf"
+}
+if(type==="port"){
+return area==="majd1" || area==="rada1" || area==="sf_port"
+}
+return false
+}
+
+function isMentionByIndex(area,index,type){
+if(type==="port"){
+if(area==="sad_super" && index===1) return true
+if(area==="sad" && index===1) return true
+if(area==="coast" && index===0) return true
+}
+return false
+}
+
+function getUnits(area){
+const arr=[]
+const type=document.getElementById("reportType").value
+
+document.querySelectorAll("#"+area+" .row").forEach((r,index)=>{
+let code=r.querySelector("input").value.trim()
+const prefix=r.querySelector("select").value
+
+if(isAlwaysMentionArea(area,type) || isMentionByIndex(area,index,type)){
+
+if(!code) code="000"
+
+arr.push("@"+prefix+"-"+code)
+
+return
+}
+
+if(!code) code="000"
+
+if(prefix==="R"){
+arr.push("R-"+code)
+}else{
+arr.push("@"+prefix+"-"+code)
+}
+})
+
+return arr
+}
+
+function lineSingle(title,data){
+let t=""
+data.forEach(v=>{
+t+=title+" : "+v+"\n"
+})
+return t+"\n"
+}
+
+function lineNumbered(title,data){
+let t=""
+data.forEach((v,i)=>{
+t+=title+" "+(i+1)+" : "+v+"\n"
+})
+return t+"\n"
+}
+
+function generate(){
+const type=document.getElementById("reportType").value
+const ampm=document.getElementById("ampm").value
+const op=document.getElementById("operationsInput").value
+const dep=document.getElementById("deputyInput").value
+
+let r=""
+
+if(type==="island"){
+r="** تــقــريــر الــعــمــلــيــات فــي جــزيــرة بــولــيــتــو **\n\n"
+r+="تم استلام عمليات جـزيـرة بـولـيـتـو في تمام الساعه 6 "+ampm+"\n\n"
+}else{
+r="**تــقــريــر الــعــمــلــيــات فــي الــمــيــنــاء**\n\n"
+r+="تم استلام عمليات ميناء بوليتو في تمام الساعه 6 "+ampm+"\n\n"
+}
+
+r+="العمليات : "+(op ? "@R-"+op : "R-000")+"\n\n"
+r+="نائب العمليات : "+(dep ? "@R-"+dep : "R-000")+"\n\n"
+
+r+="قيادة حرس الحدود :\n"
+r+=getUnits("border").join("\n")+"\n\n"
+
+r+=lineSingle("مجد 1",getUnits("majd1"))
+r+=lineSingle("ردع 1",getUnits("rada1"))
+
+if(type==="island"){
+r+=lineNumbered("شهاب",getUnits("sh"))
+r+=lineNumbered("سيف",getUnits("sf"))
+r+=lineNumbered("رمح",getUnits("romh"))
+r+=lineNumbered("حد",getUnits("had"))
+r+=lineNumbered("سلاح",getUnits("weapon"))
+}else{
+r+=lineNumbered("سيف",getUnits("sf_port"))
+r+=lineNumbered("رمح",getUnits("romh_port"))
+r+=lineNumbered("مشرف صد",getUnits("sad_super"))
+r+=lineNumbered("صد",getUnits("sad"))
+r+=lineNumbered("حرس",getUnits("guard"))
+r+=lineNumbered("تنظيم",getUnits("org"))
+r+=lineNumbered("ساحل",getUnits("coast"))
+r+=lineNumbered("سجن",getUnits("prison"))
+}
+
+r+=lineSingle("شرطة عسكرية",getUnits("mp"))
+r+=lineSingle("ضابط خفر",getUnits("duty"))
+r+=lineSingle("شاهين 1",getUnits("shaheen"))
+
+return r
+}
+
+function update(){
+document.getElementById("preview").textContent=generate()
+}
+
+function copyReport(){
+navigator.clipboard.writeText(generate())
+alert("تم نسخ التقرير")
+}
+
+/* القيم الافتراضية المشتركة */
+for(let i=0;i<3;i++) addUnit("border","قيادة",true)
+
+addUnit("majd1","مجد")
+addUnit("rada1","ردع")
+
+addUnit("mp","شرطة")
+addUnit("duty","خفر")
+addUnit("shaheen","شاهين")
+
+/* القيم الافتراضية للجزيرة */
+for(let i=0;i<2;i++) addNumberedUnit("sh","شهاب")
+for(let i=0;i<2;i++) addNumberedUnit("sf","سيف")
+for(let i=0;i<4;i++) addNumberedUnit("romh","رمح")
+for(let i=0;i<5;i++) addNumberedUnit("had","حد")
+for(let i=0;i<5;i++) addNumberedUnit("weapon","سلاح")
+
+/* القيم الافتراضية للميناء */
+addNumberedUnit("sf_port","سيف")
+
+for(let i=0;i<2;i++) addNumberedUnit("romh_port","رمح")
+
+addNumberedUnit("sad_super","مشرف صد")
+addNumberedUnit("sad_super","مشرف صد")
+
+addNumberedUnit("sad","صد")
+addNumberedUnit("sad","صد")
+
+for(let i=0;i<5;i++) addNumberedUnit("guard","حرس")
+
+for(let i=0;i<2;i++) addNumberedUnit("org","تنظيم")
+
+addNumberedUnit("coast","ساحل")
+addNumberedUnit("coast","ساحل")
+
+addNumberedUnit("prison","سجن")
+addNumberedUnit("prison","سجن")
+
+switchReport()
+</script>
+
+</body>
+</html>
