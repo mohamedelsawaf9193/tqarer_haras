@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -436,8 +437,8 @@ r+="نائب العمليات : "+(dep ? "@R-"+dep : "R-000")+"\n\n"
 r+="قيادة حرس الحدود :\n"
 r+=getUnits("border").join("\n")+"\n\n"
 
-r+=lineSingle("مجد 1",getUnits("majd1"))
-r+=lineSingle("ردع 1",getUnits("rada1"))
+r+=lineNumbered("مجد",getUnits("majd1"))
+r+=lineNumbered("ردع",getUnits("rada1"))
 
 if(type==="island"){
 r+=lineNumbered("شهاب",getUnits("sh"))
