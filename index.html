@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -310,7 +309,20 @@ return row
 
 function addUnit(area,label,fixed=false){
 const parent=document.getElementById(area)
-const row=createRow(label,fixed)
+
+let title = label
+
+if(area==="mp"){
+const count = parent.children.length
+
+if(count===0){
+title="شرطة عسكرية"
+}else{
+title="تنظيم "+count
+}
+}
+
+const row=createRow(title,fixed)
 parent.appendChild(row)
 update()
 }
@@ -327,6 +339,7 @@ function renumberArea(area){
 const map={
 majd1:"مجد",
 rada1:"ردع",
+mp:"تنظيم",
 sh:"شهاب",
 sf:"سيف",
 romh:"رمح",
@@ -416,6 +429,19 @@ return t+"\n"
 }
 
 function generate(){
+function lineMP(data){
+let t=""
+
+data.forEach((v,i)=>{
+if(i===0){
+t+="شرطة عسكرية : "+v+"\n"
+}else{
+t+="تنظيم "+i+" : "+v+"\n"
+}
+})
+
+return t+"\n"
+}
 const type=document.getElementById("reportType").value
 const ampm=document.getElementById("ampm").value
 const op=document.getElementById("operationsInput").value
@@ -457,7 +483,7 @@ r+=lineNumbered("ساحل",getUnits("coast"))
 r+=lineNumbered("سجن",getUnits("prison"))
 }
 
-r+=lineSingle("شرطة عسكرية",getUnits("mp"))
+r+=lineMP(getUnits("mp"))
 r+=lineSingle("ضابط خفر",getUnits("duty"))
 r+=lineSingle("شاهين 1",getUnits("shaheen"))
 
