@@ -1,1 +1,0 @@
-# tqarer_haras
