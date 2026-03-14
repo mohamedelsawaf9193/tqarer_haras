@@ -212,11 +212,7 @@ text-align:center;
 <button onclick="addNumberedUnit('guard','حرس')">إضافة</button>
 </div>
 
-<div class="section">
-<h3>تنظيم</h3>
-<div id="org"></div>
-<button onclick="addNumberedUnit('org','تنظيم')">إضافة</button>
-</div>
+
 
 <div class="section">
 <h3>ساحل</h3>
@@ -478,7 +474,6 @@ r+=lineNumbered("رمح",getUnits("romh_port"))
 r+=lineNumbered("مشرف صد",getUnits("sad_super"))
 r+=lineNumbered("صد",getUnits("sad"))
 r+=lineNumbered("حرس",getUnits("guard"))
-r+=lineNumbered("تنظيم",getUnits("org"))
 r+=lineNumbered("ساحل",getUnits("coast"))
 r+=lineNumbered("سجن",getUnits("prison"))
 }
@@ -529,7 +524,7 @@ addNumberedUnit("sad","صد")
 
 for(let i=0;i<5;i++) addNumberedUnit("guard","حرس")
 
-for(let i=0;i<2;i++) addNumberedUnit("org","تنظيم")
+
 
 addNumberedUnit("coast","ساحل")
 addNumberedUnit("coast","ساحل")
