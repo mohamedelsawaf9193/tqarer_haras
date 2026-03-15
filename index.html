@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -384,25 +385,36 @@ const arr=[]
 const type=document.getElementById("reportType").value
 
 document.querySelectorAll("#"+area+" .row").forEach((r,index)=>{
+
 let code=r.querySelector("input").value.trim()
 const prefix=r.querySelector("select").value
 
-if(isAlwaysMentionArea(area,type) || isMentionByIndex(area,index,type)){
+const empty = !code
 
 if(!code) code="000"
 
+if(isAlwaysMentionArea(area,type) || isMentionByIndex(area,index,type)){
+
+if(empty){
+arr.push(prefix+"-000")
+}else{
 arr.push("@"+prefix+"-"+code)
+}
 
 return
 }
 
-if(!code) code="000"
+if(empty){
+arr.push(prefix+"-"+code)
+return
+}
 
 if(prefix==="R"){
 arr.push("R-"+code)
 }else{
 arr.push("@"+prefix+"-"+code)
 }
+
 })
 
 return arr
